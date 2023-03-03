@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;&display=swap");
+
+.main {
+  text-align: center;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  h2 {
+    font-size: 3.5em;
+  }
+
+  span {
+    font-size: 0.95em;
+    font-weight: 500;
+  }
+}
+
+.SearchInput {
+  border-radius: 10px;
+  border: 1px solid #dedede;
+  width: 60%;
+  margin: 2em auto;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 0.3em;
+  display: flex;
+  align-items: center;
+
+  button {
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    background-color: #ea3431;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+  }
+
+  input {
+    font-size: 0.85em;
+    flex: 1;
+    outline: none;
+    border: none;
+    padding-left: 1em;
+  }
+
+  select {
+    height: 45px;
+    width: 125px;
+    padding-left: .5em;
+    padding-right: 1em;
+    font-size: 0.9em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='grey' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: 50%;
+    border: 1px solid #b9b9b9b2;
+    border-radius: 5px;
+    outline: none;
+    display: block;
+  }
+}
+
+.Result {
+  width: 80%;
+  margin: 2em auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5em;
+}

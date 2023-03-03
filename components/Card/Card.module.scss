@@ -1,0 +1,93 @@
+.Card {
+  border-radius: 7px;
+  padding: 1em;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  }
+
+  div {
+    margin: 0.75em 0 0;
+
+    &:nth-of-type(1) {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 1em;
+
+      img {
+        width: 1.75em;
+        height: 1.75em;
+        border-radius: 50%;
+      }
+
+      h3 {
+        font-weight: 500;
+      }
+    }
+
+    h3 {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    &:nth-of-type(2) {
+      span {
+        display: block;
+        font-size: 0.9em;
+        font-weight: 500;
+        color: #777;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .link {
+    text-decoration: none;
+    color: #000;
+    font-size: 0.9em;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+  }
+
+  button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    text-align: center;
+    margin: 0.75em 0 0;
+    width: 100%;
+    height: 35px;
+    gap: 0.5em;
+    font-size: 0.9em;
+    background-color: #ea3431;
+    color: #ffffff;
+    transition: box-shadow 0.3s linear;
+    border-radius: 5px;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+        rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    }
+
+    &:disabled {
+      background-color: #dedede;
+      color: #777;
+      cursor: not-allowed;
+
+      &:hover {
+        box-shadow: none;
+      }
+    }
+  }
+}

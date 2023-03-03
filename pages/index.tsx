@@ -1,11 +1,46 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import Head from "next/head";
+import styles from "@/styles/Home.module.scss";
+import { Quicksand } from "next/font/google";
+import Card from "@/components/Card/Card";
+import { useEffect, useState } from "react";
+import { ResponseData } from "@/types";
+import Shimmer from "@/components/Shimmer/Shimmer";
+import NoApproval from "@/components/NoApproval/NoApproval";
 
 export default function Home() {
+  const [result, setResult] = useState<ResponseData[]>([]);
+  const [address, setAddress] = useState("");
+  const [network, setNetwork] = useState("eth");
+  const [fetchingStatus, setFetchingStatus] = useState(false);
+  const [fetchedStatus, setFetchedStatus] = useState(false);
+
+  const fetchWalletApprovals = async () => {
+    try {
+      setFetchingStatus(true);
+      setFetchedStatus(false);
+
+      let response = await fetch(
+        `/api/${network}?tokenType=erc20&address=${address}`
+      );
+      let data = await response.json();
+
+      setResult(data);
+    } catch (error) {
+    } finally {
+      setFetchingStatus(false);
+      setFetchedStatus(true);
+    }
+  };
+
+  const formSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    fetchWalletApprovals();
+  };
+
+  useEffect(() => {
+    if (address) fetchWalletApprovals();
+  }, [network]);
+
   return (
     <>
       <Head>
@@ -14,110 +49,62 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
+      <div className={styles.main}>
+        <h2>REVOKE APPROVALS</h2>
+        <span>Review and revoke your token approvals for any dApp</span>
+      </div>
+      <form className={styles.SearchInput} onSubmit={formSubmitHandler}>
+        <select value={network} onChange={(e) => setNetwork(e.target.value)}>
+          <option value="eth">Ethereum</option>
+          <option value="bsc">Binance SC</option>
+          <option value="matic">Polygon</option>
+          <option value="op">Optimism</option>
+        </select>
+        <input
+          type="text"
+          id="address-input"
+          placeholder="Search by address"
+          autoComplete={"off"}
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <button type="submit">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            width={20}
+            height={20}
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
             />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+          </svg>
+        </button>
+      </form>
+      <div className={styles.Result}>
+        {fetchedStatus &&
+          result?.map((item, index) => (
+            <Card
+              key={index}
+              name={item.allowance.value + " " + item.allowance.symbol}
+              logo={item.assetIcon}
+              spenderName={item.approvedSpenderName}
+              spenderAddress={item.approvedSpenderAddress}
+              transactionHash={item.transactionHash}
+            />
+          ))}
+        {fetchingStatus &&
+          !fetchedStatus &&
+          Array(6)
+            .fill("")
+            .map((_, id) => <Shimmer key={id} />)}
+      </div>
+      {fetchedStatus && result.length === 0 && <NoApproval />}
     </>
-  )
+  );
 }

@@ -3,6 +3,7 @@ export interface ResponseData {
   lastUpdated: string;
   assetName: string;
   assetAddress: string;
+  assetIcon: string;
   approvedSpenderName: string;
   approvedSpenderAddress: string;
   allowance: {

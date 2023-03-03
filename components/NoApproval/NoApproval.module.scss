@@ -1,0 +1,12 @@
+.NoApproval {
+  display: flex;
+  align-items: center;
+  width: 60%;
+  margin: auto;
+  gap: 1em;
+
+  div {
+    flex: 1;
+    border-bottom: 1px solid #dfdfdf;
+  }
+}

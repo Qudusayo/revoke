@@ -4,7 +4,7 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const baseUrl = "https://optimistic.etherscan.io/tokenapprovalchecker?";
+const baseUrl = "https://optimistic.etherscan.io";
 
 enum TokenType {
   ERC20 = "ERC20",
@@ -33,7 +33,9 @@ export default async function handler(
   const tokenType = req.query.tokenType as string;
 
   const axiosResponse = await axios.request({
-    url: `${baseUrl}type=${getTokenTypeIndex(tokenType)}&search=${address}`,
+    url: `${baseUrl}/tokenapprovalchecker?type=${getTokenTypeIndex(
+      tokenType
+    )}&search=${address}`,
     method: "GET",
     headers: {
       "User-Agent":
@@ -53,6 +55,7 @@ export default async function handler(
         .find("td:nth-child(3n) > a")
         .attr("href")
         ?.split("/")[2],
+      assetIcon: baseUrl + $(e).find("td:nth-child(3n) > a > img").attr("src"),
       approvedSpenderName: $(e)
         .find("td:nth-child(4n) > a > span")
         .text()

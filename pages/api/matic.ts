@@ -4,7 +4,7 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const baseUrl = "https://polygonscan.com/tokenapprovalchecker?";
+const baseUrl = "https://polygonscan.com";
 
 enum TokenType {
   ERC20 = "ERC20",
@@ -33,7 +33,9 @@ export default async function handler(
   const tokenType = req.query.tokenType as string;
 
   const axiosResponse = await axios.request({
-    url: `${baseUrl}type=${getTokenTypeIndex(tokenType)}&search=${address}`,
+    url: `${baseUrl}/tokenapprovalchecker?type=${getTokenTypeIndex(
+      tokenType
+    )}&search=${address}`,
     method: "GET",
     headers: {
       "User-Agent":
@@ -49,6 +51,7 @@ export default async function handler(
       transactionHash: $(e).find("td:first > a").text().trim(),
       lastUpdated: $(e).find("td:nth-child(6n) > span.showDate").text(),
       assetName: $(e).find("td:nth-child(3n) > a").text().trim(),
+      assetIcon: baseUrl + $(e).find("td:nth-child(3n) > a > img").attr("src"),
       assetAddress: $(e)
         .find("td:nth-child(3n) > a")
         .attr("href")
