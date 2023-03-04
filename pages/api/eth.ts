@@ -27,7 +27,7 @@ function getTokenTypeIndex(tokenType: string) {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Partial<ResponseData>[]>
+  res: NextApiResponse<Partial<ResponseData>>
 ) {
   const address = req.query.address as string;
   const tokenType = req.query.tokenType as string;
@@ -74,5 +74,5 @@ export default async function handler(
       },
     }));
 
-  res.status(200).json(response);
+  res.status(200).json({ data: response, address });
 }

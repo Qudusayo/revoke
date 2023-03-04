@@ -1,4 +1,4 @@
-export interface ResponseData {
+export interface ResponseDataType {
   transactionHash: string;
   lastUpdated: string;
   assetName: string;
@@ -10,4 +10,9 @@ export interface ResponseData {
     value: string;
     symbol: string;
   };
+}
+
+export interface ResponseData {
+  data: Partial<ResponseDataType>[];
+  address: string;
 }

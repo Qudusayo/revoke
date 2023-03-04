@@ -22,6 +22,7 @@
   border-radius: 10px;
   border: 1px solid #dedede;
   width: 60%;
+  max-width: 1144px;
   margin: 2em auto;
   font-size: 1.1em;
   font-weight: bold;
@@ -75,6 +76,7 @@
 
 .Result {
   width: 80%;
+  max-width: 1144px;
   margin: 2em auto;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

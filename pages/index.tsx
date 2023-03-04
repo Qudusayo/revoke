@@ -1,18 +1,24 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.scss";
-import { Quicksand } from "next/font/google";
+import { useAccount, useConnect } from "wagmi";
 import Card from "@/components/Card/Card";
 import { useEffect, useState } from "react";
 import { ResponseData } from "@/types";
 import Shimmer from "@/components/Shimmer/Shimmer";
 import NoApproval from "@/components/NoApproval/NoApproval";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Home() {
-  const [result, setResult] = useState<ResponseData[]>([]);
+  const [result, setResult] = useState<ResponseData | null>(null);
   const [address, setAddress] = useState("");
   const [network, setNetwork] = useState("eth");
   const [fetchingStatus, setFetchingStatus] = useState(false);
   const [fetchedStatus, setFetchedStatus] = useState(false);
+  const {
+    connector: activeConnector,
+    isConnected,
+    address: connectedAccount,
+  } = useAccount();
 
   const fetchWalletApprovals = async () => {
     try {
@@ -41,6 +47,12 @@ export default function Home() {
     if (address) fetchWalletApprovals();
   }, [network]);
 
+  useEffect(() => {
+    if (isConnected && connectedAccount) {
+      setAddress(connectedAccount);
+    }
+  }, [activeConnector, isConnected, connectedAccount]);
+
   return (
     <>
       <Head>
@@ -49,6 +61,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <nav>
+        <ConnectButton chainStatus={"icon"} />
+      </nav>
       <div className={styles.main}>
         <h2>REVOKE APPROVALS</h2>
         <span>Review and revoke your token approvals for any dApp</span>
@@ -88,14 +103,18 @@ export default function Home() {
       </form>
       <div className={styles.Result}>
         {fetchedStatus &&
-          result?.map((item, index) => (
+          result?.data.map((item, index) => (
             <Card
               key={index}
-              name={item.allowance.value + " " + item.allowance.symbol}
+              name={item.allowance?.value + " " + item.allowance?.symbol}
               logo={item.assetIcon}
               spenderName={item.approvedSpenderName}
               spenderAddress={item.approvedSpenderAddress}
               transactionHash={item.transactionHash}
+              isConnectedOwner={
+                connectedAccount?.toLowerCase() ===
+                  result.address.toLowerCase() && isConnected
+              }
             />
           ))}
         {fetchingStatus &&
@@ -104,7 +123,7 @@ export default function Home() {
             .fill("")
             .map((_, id) => <Shimmer key={id} />)}
       </div>
-      {fetchedStatus && result.length === 0 && <NoApproval />}
+      {fetchedStatus && result?.data.length === 0 && <NoApproval />}
     </>
   );
 }

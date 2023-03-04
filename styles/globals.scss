@@ -16,3 +16,13 @@ input,
 select {
   font-family: "Quicksand", sans-serif;
 }
+
+nav {
+  padding: 1em 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 80%;
+  max-width: 1144px;
+  margin: auto;
+}
