@@ -14,6 +14,7 @@ export default function Home() {
   const [network, setNetwork] = useState("eth");
   const [fetchingStatus, setFetchingStatus] = useState(false);
   const [fetchedStatus, setFetchedStatus] = useState(false);
+  const [chainId, setChainId] = useState<number | null>(null);
   const {
     connector: activeConnector,
     isConnected,
@@ -31,6 +32,23 @@ export default function Home() {
       let data = await response.json();
 
       setResult(data);
+      switch (network) {
+        case "eth":
+          setChainId(1);
+          break;
+        case "bsc":
+          setChainId(56);
+          break;
+        case "matic":
+          setChainId(137);
+          break;
+        case "op":
+          setChainId(10);
+          break;
+        default:
+          setChainId(1);
+          break;
+      }
     } catch (error) {
     } finally {
       setFetchingStatus(false);
@@ -110,11 +128,12 @@ export default function Home() {
               logo={item.assetIcon}
               spenderName={item.approvedSpenderName}
               spenderAddress={item.approvedSpenderAddress}
-              transactionHash={item.transactionHash}
+              assetAddress={item.assetAddress}
               isConnectedOwner={
                 connectedAccount?.toLowerCase() ===
                   result.address.toLowerCase() && isConnected
               }
+              chainId={chainId}
             />
           ))}
         {fetchingStatus &&
